@@ -16,8 +16,11 @@ import {
   BookOpen,
   ListChecks,
 } from "lucide-react";
-import { catalog, findChapterBySlug } from "@/data/curriculum";
-import { chapterContent } from "@/data/chapter-content";
+import { catalog, findChapterBySlug, type Chapter, type ClassLevel, type Subject, type Board } from "@/data/curriculum";
+import { chapterContent, type ChapterContent } from "@/data/chapter-content";
+
+type Meta = { board: Board; classLevel: ClassLevel; subject: Subject; chapter: Chapter };
+type LoaderData = { meta: Meta; content: ChapterContent };
 import { ChapterBlock } from "@/components/chapter/ChapterBlock";
 import { Logo } from "@/components/site/Logo";
 import { SearchDialog } from "@/components/site/SearchDialog";
