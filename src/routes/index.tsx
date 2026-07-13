@@ -1,24 +1,60 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
+import { SiteHeader } from "@/components/site/SiteHeader";
+import { SiteFooter } from "@/components/site/SiteFooter";
+import { SearchDialog } from "@/components/site/SearchDialog";
+import {
+  Hero,
+  Subjects,
+  Features,
+  FeaturedChapters,
+  Benefits,
+  Journey,
+  ComingSoon,
+  Testimonials,
+  FAQ,
+  BottomCTA,
+} from "@/components/site/HomeSections";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({
+    meta: [
+      { title: "Vidyana — Learn CBSE & ICSE, beautifully" },
+      {
+        name: "description",
+        content:
+          "Vidyana is a modern learning platform for Class 6–12 students. Read chapters designed like a great textbook, take interactive quizzes, and study with calm.",
+      },
+      { property: "og:title", content: "Vidyana — Learn CBSE & ICSE, beautifully" },
+      {
+        property: "og:description",
+        content:
+          "A quieter, calmer way to learn what school teaches. CBSE & ICSE chapters, designed like a great textbook.",
+      },
+    ],
+  }),
+  component: Home,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function Home() {
+  const [searchOpen, setSearchOpen] = useState(false);
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-dvh bg-background text-foreground">
+      <SiteHeader onOpenSearch={() => setSearchOpen(true)} />
+      <main>
+        <Hero />
+        <Subjects />
+        <Features />
+        <FeaturedChapters />
+        <Benefits />
+        <Journey />
+        <Testimonials />
+        <ComingSoon />
+        <FAQ />
+        <BottomCTA />
+      </main>
+      <SiteFooter />
+      <SearchDialog open={searchOpen} onClose={() => setSearchOpen(false)} />
     </div>
   );
 }
