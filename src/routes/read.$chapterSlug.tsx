@@ -26,7 +26,7 @@ import { Logo } from "@/components/site/Logo";
 import { SearchDialog } from "@/components/site/SearchDialog";
 
 export const Route = createFileRoute("/read/$chapterSlug")({
-  loader: ({ params }) => {
+  loader: ({ params }): LoaderData => {
     const meta = findChapterBySlug(params.chapterSlug);
     const content = chapterContent[params.chapterSlug];
     if (!meta || !content) throw notFound();
