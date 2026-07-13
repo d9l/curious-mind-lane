@@ -57,7 +57,7 @@ export const Route = createFileRoute("/read/$chapterSlug")({
 });
 
 function ReadingPage() {
-  const { meta, content } = Route.useLoaderData();
+  const { meta, content } = Route.useLoaderData() as LoaderData;
   const [leftOpen, setLeftOpen] = useState(false);
   const [rightOpen, setRightOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
