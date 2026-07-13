@@ -83,7 +83,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "A modern learning platform for Class 6–12 students. Explore CBSE and ICSE chapters through clear notes, interactive concepts, and quiet, focused reading.",
+          "Vidyana is a modern learning platform for Class 6–12 students. Read chapters designed like a great textbook, take interactive quizzes, and study with calm.",
       },
       { name: "author", content: "Vidyana" },
       { name: "theme-color", content: "#f7f2e6" },
@@ -91,10 +91,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Class 6–12 CBSE & ICSE lessons designed like a great textbook. Clear, calm, and built to help students think.",
+          "Vidyana is a modern learning platform for Class 6–12 students. Read chapters designed like a great textbook, take interactive quizzes, and study with calm.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Vidyana — Learn CBSE & ICSE, beautifully" },
+      { name: "twitter:description", content: "Vidyana is a modern learning platform for Class 6–12 students. Read chapters designed like a great textbook, take interactive quizzes, and study with calm." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/af6ee0f7-a4d3-4158-b3b3-914986274d27/id-preview-b040ffb1--7e7e7630-2a35-46e8-9fc7-287ce2dda0f5.lovable.app-1783959134044.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/af6ee0f7-a4d3-4158-b3b3-914986274d27/id-preview-b040ffb1--7e7e7630-2a35-46e8-9fc7-287ce2dda0f5.lovable.app-1783959134044.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },

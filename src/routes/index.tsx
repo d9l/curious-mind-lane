@@ -29,7 +29,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "A quieter, calmer way to learn what school teaches. CBSE & ICSE chapters, designed like a great textbook.",
+          "Vidyana is a modern learning platform for Class 6–12 students. Read chapters designed like a great textbook, take interactive quizzes, and study with calm.",
       },
     ],
   }),
