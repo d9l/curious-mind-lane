@@ -15,7 +15,7 @@ import {
   Bell,
   Moon,
   Sun,
-  Loader2,
+  
   Menu,
   X,
 } from "lucide-react";
