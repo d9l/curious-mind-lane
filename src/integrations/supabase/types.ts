@@ -14,16 +14,284 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      boards: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      chapters: {
+        Row: {
+          chapter_number: number
+          created_at: string
+          difficulty: string | null
+          display_order: number
+          estimated_read_time: number | null
+          id: string
+          is_published: boolean
+          short_description: string | null
+          slug: string
+          subject_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          chapter_number: number
+          created_at?: string
+          difficulty?: string | null
+          display_order?: number
+          estimated_read_time?: number | null
+          id?: string
+          is_published?: boolean
+          short_description?: string | null
+          slug: string
+          subject_id: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          chapter_number?: number
+          created_at?: string
+          difficulty?: string | null
+          display_order?: number
+          estimated_read_time?: number | null
+          id?: string
+          is_published?: boolean
+          short_description?: string | null
+          slug?: string
+          subject_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chapters_subject_id_fkey"
+            columns: ["subject_id"]
+            isOneToOne: false
+            referencedRelation: "subjects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      classes: {
+        Row: {
+          board_id: string
+          class_number: number
+          created_at: string
+          id: string
+          title: string
+        }
+        Insert: {
+          board_id: string
+          class_number: number
+          created_at?: string
+          id?: string
+          title: string
+        }
+        Update: {
+          board_id?: string
+          class_number?: number
+          created_at?: string
+          id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "classes_board_id_fkey"
+            columns: ["board_id"]
+            isOneToOne: false
+            referencedRelation: "boards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      lessons: {
+        Row: {
+          chapter_id: string
+          content: string
+          created_at: string
+          display_order: number
+          id: string
+          is_published: boolean
+          lesson_number: number
+          slug: string
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          chapter_id: string
+          content?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_published?: boolean
+          lesson_number: number
+          slug: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          chapter_id?: string
+          content?: string
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_published?: boolean
+          lesson_number?: number
+          slug?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lessons_chapter_id_fkey"
+            columns: ["chapter_id"]
+            isOneToOne: false
+            referencedRelation: "chapters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      resources: {
+        Row: {
+          chapter_id: string
+          created_at: string
+          description: string | null
+          display_order: number
+          id: string
+          thumbnail: string | null
+          title: string
+          type: Database["public"]["Enums"]["resource_type"]
+          url: string
+        }
+        Insert: {
+          chapter_id: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          thumbnail?: string | null
+          title: string
+          type: Database["public"]["Enums"]["resource_type"]
+          url: string
+        }
+        Update: {
+          chapter_id?: string
+          created_at?: string
+          description?: string | null
+          display_order?: number
+          id?: string
+          thumbnail?: string | null
+          title?: string
+          type?: Database["public"]["Enums"]["resource_type"]
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resources_chapter_id_fkey"
+            columns: ["chapter_id"]
+            isOneToOne: false
+            referencedRelation: "chapters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      subjects: {
+        Row: {
+          class_id: string
+          color: string | null
+          created_at: string
+          display_order: number
+          icon: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          class_id: string
+          color?: string | null
+          created_at?: string
+          display_order?: number
+          icon?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          class_id?: string
+          color?: string | null
+          created_at?: string
+          display_order?: number
+          icon?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "subjects_class_id_fkey"
+            columns: ["class_id"]
+            isOneToOne: false
+            referencedRelation: "classes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      resource_type: "youtube" | "pdf" | "image" | "external_link" | "download"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +418,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      resource_type: ["youtube", "pdf", "image", "external_link", "download"],
+    },
   },
 } as const
