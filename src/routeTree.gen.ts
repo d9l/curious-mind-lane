@@ -15,6 +15,9 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReadChapterSlugRouteImport } from './routes/read.$chapterSlug'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminSubjectsRouteImport } from './routes/_authenticated/admin.subjects'
+import { Route as AuthenticatedAdminClassesRouteImport } from './routes/_authenticated/admin.classes'
+import { Route as AuthenticatedAdminBoardsRouteImport } from './routes/_authenticated/admin.boards'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -45,18 +48,42 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedAdminRoute,
 } as any)
+const AuthenticatedAdminSubjectsRoute =
+  AuthenticatedAdminSubjectsRouteImport.update({
+    id: '/subjects',
+    path: '/subjects',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminClassesRoute =
+  AuthenticatedAdminClassesRouteImport.update({
+    id: '/classes',
+    path: '/classes',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminBoardsRoute =
+  AuthenticatedAdminBoardsRouteImport.update({
+    id: '/boards',
+    path: '/boards',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/read/$chapterSlug': typeof ReadChapterSlugRoute
+  '/admin/boards': typeof AuthenticatedAdminBoardsRoute
+  '/admin/classes': typeof AuthenticatedAdminClassesRoute
+  '/admin/subjects': typeof AuthenticatedAdminSubjectsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/read/$chapterSlug': typeof ReadChapterSlugRoute
+  '/admin/boards': typeof AuthenticatedAdminBoardsRoute
+  '/admin/classes': typeof AuthenticatedAdminClassesRoute
+  '/admin/subjects': typeof AuthenticatedAdminSubjectsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
@@ -66,13 +93,31 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/read/$chapterSlug': typeof ReadChapterSlugRoute
+  '/_authenticated/admin/boards': typeof AuthenticatedAdminBoardsRoute
+  '/_authenticated/admin/classes': typeof AuthenticatedAdminClassesRoute
+  '/_authenticated/admin/subjects': typeof AuthenticatedAdminSubjectsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/admin' | '/read/$chapterSlug' | '/admin/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/admin'
+    | '/read/$chapterSlug'
+    | '/admin/boards'
+    | '/admin/classes'
+    | '/admin/subjects'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/read/$chapterSlug' | '/admin'
+  to:
+    | '/'
+    | '/auth'
+    | '/read/$chapterSlug'
+    | '/admin/boards'
+    | '/admin/classes'
+    | '/admin/subjects'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -80,6 +125,9 @@ export interface FileRouteTypes {
     | '/auth'
     | '/_authenticated/admin'
     | '/read/$chapterSlug'
+    | '/_authenticated/admin/boards'
+    | '/_authenticated/admin/classes'
+    | '/_authenticated/admin/subjects'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -134,14 +182,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedAdminRoute
     }
+    '/_authenticated/admin/subjects': {
+      id: '/_authenticated/admin/subjects'
+      path: '/subjects'
+      fullPath: '/admin/subjects'
+      preLoaderRoute: typeof AuthenticatedAdminSubjectsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/classes': {
+      id: '/_authenticated/admin/classes'
+      path: '/classes'
+      fullPath: '/admin/classes'
+      preLoaderRoute: typeof AuthenticatedAdminClassesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/boards': {
+      id: '/_authenticated/admin/boards'
+      path: '/boards'
+      fullPath: '/admin/boards'
+      preLoaderRoute: typeof AuthenticatedAdminBoardsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
 interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminBoardsRoute: typeof AuthenticatedAdminBoardsRoute
+  AuthenticatedAdminClassesRoute: typeof AuthenticatedAdminClassesRoute
+  AuthenticatedAdminSubjectsRoute: typeof AuthenticatedAdminSubjectsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminBoardsRoute: AuthenticatedAdminBoardsRoute,
+  AuthenticatedAdminClassesRoute: AuthenticatedAdminClassesRoute,
+  AuthenticatedAdminSubjectsRoute: AuthenticatedAdminSubjectsRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 
