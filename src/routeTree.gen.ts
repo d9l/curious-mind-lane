@@ -9,9 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReadChapterSlugRouteImport } from './routes/read.$chapterSlug'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminSubjectsRouteImport } from './routes/_authenticated/admin.subjects'
+import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
+import { Route as AuthenticatedAdminResourcesRouteImport } from './routes/_authenticated/admin.resources'
+import { Route as AuthenticatedAdminLessonsRouteImport } from './routes/_authenticated/admin.lessons'
+import { Route as AuthenticatedAdminClassesRouteImport } from './routes/_authenticated/admin.classes'
+import { Route as AuthenticatedAdminChaptersRouteImport } from './routes/_authenticated/admin.chapters'
+import { Route as AuthenticatedAdminBoardsRouteImport } from './routes/_authenticated/admin.boards'
 
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -22,35 +42,170 @@ const ReadChapterSlugRoute = ReadChapterSlugRouteImport.update({
   path: '/read/$chapterSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
+const AuthenticatedAdminSubjectsRoute =
+  AuthenticatedAdminSubjectsRouteImport.update({
+    id: '/subjects',
+    path: '/subjects',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminSettingsRoute =
+  AuthenticatedAdminSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminResourcesRoute =
+  AuthenticatedAdminResourcesRouteImport.update({
+    id: '/resources',
+    path: '/resources',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminLessonsRoute =
+  AuthenticatedAdminLessonsRouteImport.update({
+    id: '/lessons',
+    path: '/lessons',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminClassesRoute =
+  AuthenticatedAdminClassesRouteImport.update({
+    id: '/classes',
+    path: '/classes',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminChaptersRoute =
+  AuthenticatedAdminChaptersRouteImport.update({
+    id: '/chapters',
+    path: '/chapters',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
+const AuthenticatedAdminBoardsRoute =
+  AuthenticatedAdminBoardsRouteImport.update({
+    id: '/boards',
+    path: '/boards',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/read/$chapterSlug': typeof ReadChapterSlugRoute
+  '/admin/boards': typeof AuthenticatedAdminBoardsRoute
+  '/admin/chapters': typeof AuthenticatedAdminChaptersRoute
+  '/admin/classes': typeof AuthenticatedAdminClassesRoute
+  '/admin/lessons': typeof AuthenticatedAdminLessonsRoute
+  '/admin/resources': typeof AuthenticatedAdminResourcesRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/subjects': typeof AuthenticatedAdminSubjectsRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/read/$chapterSlug': typeof ReadChapterSlugRoute
+  '/admin/boards': typeof AuthenticatedAdminBoardsRoute
+  '/admin/chapters': typeof AuthenticatedAdminChaptersRoute
+  '/admin/classes': typeof AuthenticatedAdminClassesRoute
+  '/admin/lessons': typeof AuthenticatedAdminLessonsRoute
+  '/admin/resources': typeof AuthenticatedAdminResourcesRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/admin/subjects': typeof AuthenticatedAdminSubjectsRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/read/$chapterSlug': typeof ReadChapterSlugRoute
+  '/_authenticated/admin/boards': typeof AuthenticatedAdminBoardsRoute
+  '/_authenticated/admin/chapters': typeof AuthenticatedAdminChaptersRoute
+  '/_authenticated/admin/classes': typeof AuthenticatedAdminClassesRoute
+  '/_authenticated/admin/lessons': typeof AuthenticatedAdminLessonsRoute
+  '/_authenticated/admin/resources': typeof AuthenticatedAdminResourcesRoute
+  '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
+  '/_authenticated/admin/subjects': typeof AuthenticatedAdminSubjectsRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/read/$chapterSlug'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/admin'
+    | '/read/$chapterSlug'
+    | '/admin/boards'
+    | '/admin/chapters'
+    | '/admin/classes'
+    | '/admin/lessons'
+    | '/admin/resources'
+    | '/admin/settings'
+    | '/admin/subjects'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/read/$chapterSlug'
-  id: '__root__' | '/' | '/read/$chapterSlug'
+  to:
+    | '/'
+    | '/auth'
+    | '/read/$chapterSlug'
+    | '/admin/boards'
+    | '/admin/chapters'
+    | '/admin/classes'
+    | '/admin/lessons'
+    | '/admin/resources'
+    | '/admin/settings'
+    | '/admin/subjects'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/admin'
+    | '/read/$chapterSlug'
+    | '/_authenticated/admin/boards'
+    | '/_authenticated/admin/chapters'
+    | '/_authenticated/admin/classes'
+    | '/_authenticated/admin/lessons'
+    | '/_authenticated/admin/resources'
+    | '/_authenticated/admin/settings'
+    | '/_authenticated/admin/subjects'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
   ReadChapterSlugRoute: typeof ReadChapterSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -65,11 +220,112 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReadChapterSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/subjects': {
+      id: '/_authenticated/admin/subjects'
+      path: '/subjects'
+      fullPath: '/admin/subjects'
+      preLoaderRoute: typeof AuthenticatedAdminSubjectsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/settings': {
+      id: '/_authenticated/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/resources': {
+      id: '/_authenticated/admin/resources'
+      path: '/resources'
+      fullPath: '/admin/resources'
+      preLoaderRoute: typeof AuthenticatedAdminResourcesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/lessons': {
+      id: '/_authenticated/admin/lessons'
+      path: '/lessons'
+      fullPath: '/admin/lessons'
+      preLoaderRoute: typeof AuthenticatedAdminLessonsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/classes': {
+      id: '/_authenticated/admin/classes'
+      path: '/classes'
+      fullPath: '/admin/classes'
+      preLoaderRoute: typeof AuthenticatedAdminClassesRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/chapters': {
+      id: '/_authenticated/admin/chapters'
+      path: '/chapters'
+      fullPath: '/admin/chapters'
+      preLoaderRoute: typeof AuthenticatedAdminChaptersRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
+    '/_authenticated/admin/boards': {
+      id: '/_authenticated/admin/boards'
+      path: '/boards'
+      fullPath: '/admin/boards'
+      preLoaderRoute: typeof AuthenticatedAdminBoardsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminBoardsRoute: typeof AuthenticatedAdminBoardsRoute
+  AuthenticatedAdminChaptersRoute: typeof AuthenticatedAdminChaptersRoute
+  AuthenticatedAdminClassesRoute: typeof AuthenticatedAdminClassesRoute
+  AuthenticatedAdminLessonsRoute: typeof AuthenticatedAdminLessonsRoute
+  AuthenticatedAdminResourcesRoute: typeof AuthenticatedAdminResourcesRoute
+  AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
+  AuthenticatedAdminSubjectsRoute: typeof AuthenticatedAdminSubjectsRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminBoardsRoute: AuthenticatedAdminBoardsRoute,
+  AuthenticatedAdminChaptersRoute: AuthenticatedAdminChaptersRoute,
+  AuthenticatedAdminClassesRoute: AuthenticatedAdminClassesRoute,
+  AuthenticatedAdminLessonsRoute: AuthenticatedAdminLessonsRoute,
+  AuthenticatedAdminResourcesRoute: AuthenticatedAdminResourcesRoute,
+  AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
+  AuthenticatedAdminSubjectsRoute: AuthenticatedAdminSubjectsRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
   ReadChapterSlugRoute: ReadChapterSlugRoute,
 }
 export const routeTree = rootRouteImport
