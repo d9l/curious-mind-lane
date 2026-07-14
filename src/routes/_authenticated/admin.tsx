@@ -15,12 +15,12 @@ import {
   Bell,
   Moon,
   Sun,
-  Loader2,
+  
   Menu,
   X,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { useCurrentUser, useIsAdmin } from "@/hooks/use-auth";
+import { useCurrentUser } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -42,8 +42,7 @@ const NAV = [
 ] as const;
 
 function AdminLayout() {
-  const { user, loading } = useCurrentUser();
-  const { data: isAdmin, isLoading: adminLoading } = useIsAdmin(user?.id);
+  const { user } = useCurrentUser();
   const navigate = useNavigate();
   const [dark, setDark] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -68,30 +67,6 @@ function AdminLayout() {
     navigate({ to: "/auth", replace: true });
   }
 
-  if (loading || adminLoading) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center bg-background">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <div className="flex min-h-dvh items-center justify-center bg-background px-4">
-        <div className="max-w-md text-center">
-          <h1 className="font-display text-2xl font-medium">Access denied</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Your account ({user?.email}) doesn't have admin permissions.
-          </p>
-          <div className="mt-6 flex justify-center gap-2">
-            <Button variant="outline" onClick={handleSignOut}>Sign out</Button>
-            <Button asChild><Link to="/">Go home</Link></Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-dvh bg-muted/20">
