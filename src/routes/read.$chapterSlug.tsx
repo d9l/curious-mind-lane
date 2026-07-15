@@ -24,6 +24,7 @@ type LoaderData = { meta: Meta; content: ChapterContent };
 import { ChapterBlock } from "@/components/chapter/ChapterBlock";
 import { Logo } from "@/components/site/Logo";
 import { SearchDialog } from "@/components/site/SearchDialog";
+import { LibraryTree } from "@/components/reader/LibraryTree";
 
 export const Route = createFileRoute("/read/$chapterSlug")({
   loader: ({ params }): LoaderData => {
@@ -64,6 +65,7 @@ function ReadingPage() {
   const [progress, setProgress] = useState(0);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [bookmarked, setBookmarked] = useState(false);
+  const [selectedChapterId, setSelectedChapterId] = useState<string | null>(null);
 
   // Reading progress
   useEffect(() => {
@@ -180,7 +182,11 @@ function ReadingPage() {
         {/* Left sidebar */}
         <aside className="hidden lg:block">
           <div className="sticky top-24">
-            <LibraryTree currentSlug={meta.chapter.slug} />
+            <LibraryTree
+              selectedChapterId={selectedChapterId}
+              onSelectChapter={setSelectedChapterId}
+            />
+
           </div>
         </aside>
 
@@ -358,7 +364,13 @@ function ReadingPage() {
       {/* Mobile drawers */}
       {leftOpen && (
         <Drawer side="left" onClose={() => setLeftOpen(false)} title="Library">
-          <LibraryTree currentSlug={meta.chapter.slug} onNavigate={() => setLeftOpen(false)} />
+          <LibraryTree
+            selectedChapterId={selectedChapterId}
+            onSelectChapter={(id) => {
+              setSelectedChapterId(id);
+              setLeftOpen(false);
+            }}
+          />
         </Drawer>
       )}
       {rightOpen && (
@@ -402,181 +414,8 @@ function IconBtn({
   );
 }
 
-/* ---------- Left: library tree ---------- */
-function LibraryTree({
-  currentSlug,
-  onNavigate,
-}: {
-  currentSlug: string;
-  onNavigate?: () => void;
-}) {
-  return (
-    <nav aria-label="Library" className="text-sm">
-      <div className="mb-4">
-        <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          Library
-        </p>
-      </div>
-      <div className="space-y-4">
-        {catalog.map((b) => (
-          <BoardBranch
-            key={b.board}
-            board={b.board}
-            defaultOpen={b.board === "CBSE"}
-            classes={b.classes}
-            currentSlug={currentSlug}
-            onNavigate={onNavigate}
-          />
-        ))}
-      </div>
-    </nav>
-  );
-}
 
-function BoardBranch({
-  board,
-  classes,
-  currentSlug,
-  onNavigate,
-  defaultOpen,
-}: {
-  board: string;
-  classes: (typeof catalog)[number]["classes"];
-  currentSlug: string;
-  onNavigate?: () => void;
-  defaultOpen?: boolean;
-}) {
-  const [open, setOpen] = useState(!!defaultOpen);
-  return (
-    <div>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-2 rounded-md px-2 py-1.5 text-left text-foreground hover:bg-muted"
-      >
-        <span
-          className={`grid h-5 w-5 place-items-center rounded bg-primary/10 font-mono text-[10px] font-semibold text-primary`}
-        >
-          {board[0]}
-        </span>
-        <span className="font-medium">{board}</span>
-        <ChevronDown
-          className={`h-3.5 w-3.5 text-muted-foreground transition-transform ${
-            open ? "" : "-rotate-90"
-          }`}
-        />
-      </button>
-      {open && (
-        <div className="ml-2 mt-1 space-y-1 border-l border-border pl-3">
-          {classes.map((c) => (
-            <ClassBranch
-              key={c.id}
-              classItem={c}
-              currentSlug={currentSlug}
-              onNavigate={onNavigate}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
 
-function ClassBranch({
-  classItem,
-  currentSlug,
-  onNavigate,
-}: {
-  classItem: (typeof catalog)[number]["classes"][number];
-  currentSlug: string;
-  onNavigate?: () => void;
-}) {
-  const hasCurrent = classItem.subjects.some((s) =>
-    s.chapters.some((c) => c.slug === currentSlug),
-  );
-  const [open, setOpen] = useState(hasCurrent);
-  return (
-    <div>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="grid w-full grid-cols-[1fr_auto] items-center gap-2 rounded-md px-2 py-1 text-left text-sm text-foreground hover:bg-muted"
-      >
-        <span>{classItem.label}</span>
-        <ChevronDown
-          className={`h-3 w-3 text-muted-foreground transition-transform ${
-            open ? "" : "-rotate-90"
-          }`}
-        />
-      </button>
-      {open && classItem.subjects.length === 0 && (
-        <p className="ml-2 mt-1 px-2 text-xs italic text-muted-foreground">Coming soon</p>
-      )}
-      {open && (
-        <div className="ml-2 mt-1 space-y-1 border-l border-border pl-3">
-          {classItem.subjects.map((s) => (
-            <SubjectBranch
-              key={s.id}
-              subject={s}
-              currentSlug={currentSlug}
-              onNavigate={onNavigate}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function SubjectBranch({
-  subject,
-  currentSlug,
-  onNavigate,
-}: {
-  subject: (typeof catalog)[number]["classes"][number]["subjects"][number];
-  currentSlug: string;
-  onNavigate?: () => void;
-}) {
-  const has = subject.chapters.some((c) => c.slug === currentSlug);
-  const [open, setOpen] = useState(has);
-  return (
-    <div>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="grid w-full grid-cols-[1fr_auto] items-center gap-2 rounded-md px-2 py-1 text-left text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
-      >
-        <span>{subject.name}</span>
-        <ChevronDown
-          className={`h-3 w-3 transition-transform ${open ? "" : "-rotate-90"}`}
-        />
-      </button>
-      {open && (
-        <ul className="ml-2 mt-1 space-y-0.5 border-l border-border pl-3">
-          {subject.chapters.length === 0 && (
-            <li className="px-2 text-xs italic text-muted-foreground">Coming soon</li>
-          )}
-          {subject.chapters.map((c) => {
-            const active = c.slug === currentSlug;
-            return (
-              <li key={c.slug}>
-                <Link
-                  to="/read/$chapterSlug"
-                  params={{ chapterSlug: c.slug }}
-                  onClick={onNavigate}
-                  className={`block rounded-md px-2 py-1 text-[13px] transition-colors ${
-                    active
-                      ? "bg-primary/10 font-medium text-primary"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  }`}
-                >
-                  {c.number}. {c.title}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </div>
-  );
-}
 
 /* ---------- Right: TOC ---------- */
 function TOC({
