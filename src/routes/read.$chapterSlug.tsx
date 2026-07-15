@@ -24,6 +24,7 @@ type LoaderData = { meta: Meta; content: ChapterContent };
 import { ChapterBlock } from "@/components/chapter/ChapterBlock";
 import { Logo } from "@/components/site/Logo";
 import { SearchDialog } from "@/components/site/SearchDialog";
+import { LibraryTree } from "@/components/reader/LibraryTree";
 
 export const Route = createFileRoute("/read/$chapterSlug")({
   loader: ({ params }): LoaderData => {
