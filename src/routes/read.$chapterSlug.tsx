@@ -181,12 +181,11 @@ function ReadingPage() {
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-8 px-4 py-8 sm:px-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:px-8 xl:grid-cols-[260px_minmax(0,1fr)_260px]">
         {/* Left sidebar */}
         <aside className="hidden lg:block">
-          <div className="sticky top-24">
+          <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-2">
             <LibraryTree
               selectedChapterId={selectedChapterId}
               onSelectChapter={setSelectedChapterId}
             />
-
           </div>
         </aside>
 
