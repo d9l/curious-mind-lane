@@ -364,7 +364,13 @@ function ReadingPage() {
       {/* Mobile drawers */}
       {leftOpen && (
         <Drawer side="left" onClose={() => setLeftOpen(false)} title="Library">
-          <LibraryTree currentSlug={meta.chapter.slug} onNavigate={() => setLeftOpen(false)} />
+          <LibraryTree
+            selectedChapterId={selectedChapterId}
+            onSelectChapter={(id) => {
+              setSelectedChapterId(id);
+              setLeftOpen(false);
+            }}
+          />
         </Drawer>
       )}
       {rightOpen && (
