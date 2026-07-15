@@ -182,7 +182,11 @@ function ReadingPage() {
         {/* Left sidebar */}
         <aside className="hidden lg:block">
           <div className="sticky top-24">
-            <LibraryTree currentSlug={meta.chapter.slug} />
+            <LibraryTree
+              selectedChapterId={selectedChapterId}
+              onSelectChapter={setSelectedChapterId}
+            />
+
           </div>
         </aside>
 
