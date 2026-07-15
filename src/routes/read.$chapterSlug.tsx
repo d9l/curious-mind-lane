@@ -65,6 +65,7 @@ function ReadingPage() {
   const [progress, setProgress] = useState(0);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [bookmarked, setBookmarked] = useState(false);
+  const [selectedChapterId, setSelectedChapterId] = useState<string | null>(null);
 
   // Reading progress
   useEffect(() => {
